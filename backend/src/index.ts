@@ -4,7 +4,7 @@ import { MongoConnector } from './connector/db_connector';
 const app = express();
 const port = 4200;
 
-async function main() {
+(async function main() {
     const mongoConnector = MongoConnector.getInstance();
 
     try {
@@ -20,6 +20,4 @@ async function main() {
     } finally {
         await mongoConnector.close();
     }
-}
-
-main();
+})()
