@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { MongoClient, Db } from 'mongodb';
+import {MongoClient, Db} from 'mongodb';
 
 export class MongoConnector {
     private static instance: MongoConnector;
@@ -29,7 +29,7 @@ export class MongoConnector {
         this.connected = true;
     }
 
-    private getDb(): Db {
+    getDb(): Db {
         if (!this.db) throw new Error('Database not initialized. Call init() first.');
         return this.db;
     }
