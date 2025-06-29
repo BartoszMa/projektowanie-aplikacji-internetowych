@@ -49,5 +49,13 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     });
 
+    router.get('/authentication', async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            res.status(200).json({ "authenticated": true });
+        } else {
+            res.status(200).json({ "authenticated": false });
+        }
+    })
+
     return router;
 }
