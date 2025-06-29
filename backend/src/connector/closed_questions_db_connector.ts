@@ -19,6 +19,14 @@ export class ClosedQuestionsDbConnector {
         return result as ClosedQuestion[];
     }
 
+    async getClosedQuestion(question_id: number): Promise<ClosedQuestion> {
+        const result = await this.collection.findOne({id: question_id});
+        if (!result) {
+            throw new Error(`Question not found: ${question_id}`);
+        }
+        return result;
+    }
+
     async insertClosedQuestions(questions: ClosedQuestion[]) {
         await this.collection.insertMany(questions)
     }

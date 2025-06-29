@@ -1,5 +1,5 @@
 import {Collection, Db} from 'mongodb';
-import {ClosedQuestion, OpenQuestion} from "../types";
+import {OpenQuestion} from "../types";
 
 
 const COLLECTION_NAME = "OpenQuestions";
@@ -16,7 +16,15 @@ export class OpenQuestionsDbConnector {
         if (!result) {
             throw new Error(`Random OpenQuestions not found.`);
         }
-        return result as ClosedQuestion[];
+        return result as OpenQuestion[];
+    }
+
+    async getOpenQuestion(question_id: number): Promise<OpenQuestion> {
+        const result = await this.collection.findOne({id: question_id});
+        if (!result) {
+            throw new Error(`Question not found: ${question_id}`);
+        }
+        return result;
     }
 
     async insertOpenQuestions(questions: OpenQuestion[]) {
