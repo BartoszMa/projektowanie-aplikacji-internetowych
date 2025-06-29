@@ -2,7 +2,7 @@ import {ClosedQuestionsDbConnector} from "../connector/closed_questions_db_conne
 import {AnswerResult, ClosedQuestion, OpenQuestion, UserAnswer} from "../types";
 import {OpenQuestionsDbConnector} from "../connector/open_questions_db_connector";
 
-class QuestionsService {
+export class QuestionsService {
     private readonly dbOpenConnector: OpenQuestionsDbConnector;
     private readonly dbClosedConnector: ClosedQuestionsDbConnector;
 
