@@ -1,53 +1,53 @@
 import { Router } from 'express';
 import { UserAnswer } from '../types';
-import {ClosedQuestionsDbConnector} from "../connector/closed_questions_db_connector";
-import {OpenQuestionsDbConnector} from "../connector/open_questions_db_connector";
-import {MongoConnector} from "../connector/db_connector";
-import {QuestionsService} from "../services/questions_service";
+import { ClosedQuestionsDbConnector } from '../connector/closed_questions_db_connector';
+import { OpenQuestionsDbConnector } from '../connector/open_questions_db_connector';
+import { MongoConnector } from '../connector/db_connector';
+import { QuestionsService } from '../services/questions_service';
 
-const router = Router();
+export default function createRouter(mongo_connector: MongoConnector): Router {
+    const router = Router();
 
-const mongoConnector = MongoConnector.getInstance();
-const closedQuestionsConnector = new ClosedQuestionsDbConnector(mongoConnector.getDb())
-const openQuestionsConnector = new OpenQuestionsDbConnector(mongoConnector.getDb())
+    const closedQuestionsConnector = new ClosedQuestionsDbConnector(mongo_connector.getDb());
+    const openQuestionsConnector = new OpenQuestionsDbConnector(mongo_connector.getDb());
+    const questionService = new QuestionsService(openQuestionsConnector, closedQuestionsConnector);
 
-const questionService = new QuestionsService(openQuestionsConnector, closedQuestionsConnector);
+    router.get('/closed-questions', async (_, res) => {
+        try {
+            const questions = await questionService.getRandomClosedQuestions();
+            res.json(questions);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to fetch closed questions.' });
+        }
+    });
 
-router.get('/closed', async (_, res) => {
-    try {
-        const questions = await questionService.getRandomClosedQuestions();
-        res.json(questions);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch questions.' });
-    }
-});
+    router.get('/open-questions', async (_, res) => {
+        try {
+            const questions = await questionService.getRandomOpenQuestions();
+            res.json(questions);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to fetch open questions.' });
+        }
+    });
 
-router.get('/open', async (_, res) => {
-    try {
-        const questions = await questionService.getRandomOpenQuestions();
-        res.json(questions);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch questions.' });
-    }
-});
+    router.get('/questions-mix', async (_, res) => {
+        try {
+            const questions = await questionService.getMixedQuestions();
+            res.json(questions);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to fetch mixed questions.' });
+        }
+    });
 
-router.get('/mix', async (_, res) => {
-    try {
-        const questions = await questionService.getMixedQuestions();
-        res.json(questions);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch questions.' });
-    }
-});
+    router.post('/check-answers', async (req, res) => {
+        const answers: UserAnswer[] = req.body.answers;
+        try {
+            const results = await questionService.checkAnswers(answers);
+            res.json(results);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to check answers.' });
+        }
+    });
 
-router.post('/check-answers', async (req, res) => {
-    const answers: UserAnswer[] = req.body.answers;
-    try {
-        const results = await questionService.checkAnswers(answers);
-        res.json(results);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch answers.' });
-    }
-});
-
-export default router;
+    return router;
+}
