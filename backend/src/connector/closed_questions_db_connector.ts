@@ -12,22 +12,33 @@ export class ClosedQuestionsDbConnector {
     }
 
     async getRandomClosedQuestions(questions_number: number=10): Promise<ClosedQuestion[]> {
-        const result = await this.collection.aggregate([{ $sample: {size: questions_number} }]).toArray();
-        if (!result) {
-            throw new Error(`Random ClosedQuestion not found.`);
+        try {
+            const result = await this.collection.aggregate([{$sample: {size: questions_number}}]).toArray();
+            return result as ClosedQuestion[];
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Error getting closed questions: ${error}`);
         }
-        return result as ClosedQuestion[];
     }
 
     async getClosedQuestion(question_id: number): Promise<ClosedQuestion> {
-        const result = await this.collection.findOne({id: question_id});
-        if (!result) {
-            throw new Error(`Question not found: ${question_id}`);
+        try {
+            const result = await this.collection.findOne({id: question_id});
+
+            return result as ClosedQuestion;
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Error getting closed question: ${error}`);
         }
-        return result;
     }
 
     async insertClosedQuestions(questions: ClosedQuestion[]) {
-        await this.collection.insertMany(questions)
+        try {
+            await this.collection.insertMany(questions)
+        } catch (error) {
+            console.log(error);
+            throw new Error(`Error inserting closed questions: ${error}`);
+        }
+
     }
 }

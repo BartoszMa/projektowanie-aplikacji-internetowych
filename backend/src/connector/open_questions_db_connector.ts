@@ -2,7 +2,7 @@ import {Collection, Db} from 'mongodb';
 import {OpenQuestion} from "../types";
 
 
-const COLLECTION_NAME = "OpenQuestions";
+const COLLECTION_NAME = "a";
 
 export class OpenQuestionsDbConnector {
     private readonly collection: Collection<OpenQuestion>;
@@ -12,22 +12,36 @@ export class OpenQuestionsDbConnector {
     }
 
     async getRandomOpenQuestions(questions_number: number=10): Promise<OpenQuestion[]> {
-        const result = await this.collection.aggregate([{ $sample: {size: questions_number} }]).toArray();
-        if (!result) {
-            throw new Error(`Random OpenQuestions not found.`);
+        try {
+            const result = await this.collection.aggregate([{ $sample: {size: questions_number} }]).toArray();
+
+            return result as OpenQuestion[];
+
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error retrieving OpenQuestions: ${error}`);
         }
-        return result as OpenQuestion[];
     }
 
     async getOpenQuestion(question_id: number): Promise<OpenQuestion> {
-        const result = await this.collection.findOne({id: question_id});
-        if (!result) {
-            throw new Error(`Question not found: ${question_id}`);
+        try {
+            const result = await this.collection.findOne({id: question_id});
+
+            return result as OpenQuestion;
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error retrievin Question: ${error}`);
         }
-        return result;
     }
 
     async insertOpenQuestions(questions: OpenQuestion[]) {
-        await this.collection.insertMany(questions)
+        try {
+            await this.collection.insertMany(questions)
+        }
+        catch (error) {
+            console.log(error);
+            throw new Error(`Error adding OpenQuestions: ${error}`);
+        }
+
     }
 }
