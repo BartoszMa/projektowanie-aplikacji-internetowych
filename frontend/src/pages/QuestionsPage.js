@@ -15,12 +15,12 @@ const QuestionsPage = () => {
 
     const endpointMap = {
         // TODO: change from mockData to realData
-        // 'closed-questions': '/api/closed-questions',
-        // 'open-questions': '/api/open-questions',
-        // 'questions-mix': '/api/questions-mix'
-        'closed-questions': '/api/mock-closed',
-        'open-questions': '/api/mock-open',
-        'questions-mix': '/api/mock-mix'
+        'closed-questions': '/api/closed-questions',
+        'open-questions': '/api/open-questions',
+        'questions-mix': '/api/questions-mix'
+        // 'closed-questions': '/api/mock-closed',
+        // 'open-questions': '/api/mock-open',
+        // 'questions-mix': '/api/mock-mix'
     };
 
     const fetchQuestions = () => {
@@ -69,13 +69,14 @@ const QuestionsPage = () => {
     const handleSubmit = () => {
         const formattedAnswers = questions.map(q => ({
             type: q.type,
-            id: q.question.id,
+            id: q.id,
             answer: answers[q._localId] || ''
         }));
 
         // TODO: change from mockData to realData
         // '/api/check-answers'
-        axios.post('/api/mock-check-answers', {
+        // '/api/mock-check-answers'
+        axios.post('/api/check-answers', {
             answers: formattedAnswers
         })
             .then(res => {
@@ -83,7 +84,7 @@ const QuestionsPage = () => {
                 if (Array.isArray(resultData)) {
                     const resultMap = {};
                     resultData.forEach(r => {
-                        const index = questions.findIndex(q => q.question.id === r.id && q.type === r.type)
+                        const index = questions.findIndex(q => q.id === r.id && q.type === r.type)
                         const localId = questions[index]._localId;
                         if (localId) resultMap[localId] = r;
                     });
@@ -142,7 +143,7 @@ const QuestionsPage = () => {
             ) : (
                 questions.map((item, idx) => (
                     <div key={item._localId} style={{ marginBottom: '1.5rem' }}>
-                        <p><strong>{idx + 1}. {item.question.question}</strong></p>
+                        <p><strong>{idx + 1}. {item.question}</strong></p>
 
                         {item.type === 'open' ? (
                             <input
@@ -152,7 +153,7 @@ const QuestionsPage = () => {
                                 style={{ width: '100%', padding: '0.5rem' }}
                             />
                         ) : (
-                            item.question.answers.map((ans, i) => (
+                            item.answers.map((ans, i) => (
                                 <div key={i}>
                                     <label>
                                         <input
