@@ -3,6 +3,7 @@ import {ClosedQuestion} from "../types";
 
 
 const COLLECTION_NAME = "closedQuestions";
+type ClosedQuestionWithType = ClosedQuestion & { type: 'closed' };
 
 export class ClosedQuestionsDbConnector {
     private readonly collection: Collection<ClosedQuestion>;
@@ -11,23 +12,31 @@ export class ClosedQuestionsDbConnector {
         this.collection = db.collection(COLLECTION_NAME);
     }
 
-    async getRandomClosedQuestions(questions_number: number=10): Promise<ClosedQuestion[]> {
+    async getRandomClosedQuestions(questions_number: number=10): Promise<ClosedQuestionWithType[]> {
         try {
             const result = await this.collection.aggregate([{$sample: {size: questions_number}}]).toArray();
-            return result as ClosedQuestion[];
+            const typedResult = result.map(q => ({
+                ...q,
+                type: 'closed' as const
+            }));
+            return typedResult as ClosedQuestionWithType[];
         } catch (error) {
-            console.log(error);
+            console.error(error);
             throw new Error(`Error getting closed questions: ${error}`);
         }
     }
 
-    async getClosedQuestion(question_id: number): Promise<ClosedQuestion> {
+    async getClosedQuestion(question_id: number): Promise<ClosedQuestionWithType> {
         try {
             const result = await this.collection.findOne({id: question_id});
-
-            return result as ClosedQuestion;
+            if (!result) throw new Error(`Question with id ${question_id} not found`);
+            const typedResult = {
+                ...result,
+                type: 'closed' as const
+            };
+            return typedResult as ClosedQuestionWithType;
         } catch (error) {
-            console.log(error);
+            console.error(error);
             throw new Error(`Error getting closed question: ${error}`);
         }
     }
@@ -36,7 +45,7 @@ export class ClosedQuestionsDbConnector {
         try {
             await this.collection.insertMany(questions)
         } catch (error) {
-            console.log(error);
+            console.error(error);
             throw new Error(`Error inserting closed questions: ${error}`);
         }
 
