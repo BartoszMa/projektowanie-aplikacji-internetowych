@@ -26,6 +26,17 @@ export class OpenQuestionsDbConnector {
         }
     }
 
+    async getOpenQuestionsIds(): Promise<number[]> {
+        try {
+            const cursor = this.collection.find({}, { projection: { id: 1 } });
+            const documents = await cursor.toArray();
+            return documents.map(q => q.id);
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error retrieving OpenQuestionsIds: ${error}`);
+        }
+    }
+
     async getOpenQuestion(question_id: number): Promise<OpenQuestionWithType> {
         try {
             const result = await this.collection.findOne({id: question_id});
