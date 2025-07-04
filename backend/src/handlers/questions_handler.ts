@@ -132,7 +132,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.put("/question/close", async (req, res) => {
+    router.put("/question/closed", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.username === "admin") {
             try {
                 const question: OpenQuestion = req.body
@@ -140,6 +140,21 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
             } catch (error) {
                 res.status(500).json({ error: 'Failed to update open question.' });
             }
+        } else {
+            res.status(401).json("User not allowed");
+        }
+    })
+
+    router.delete("/question/closed/:id", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            try {
+                const id = parseInt(req.params.id, 10);
+                await questionService.deleteClosedQuestion(id)
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to delete closed question.' });
+            }
+        } else {
+            res.status(401).json("User not allowed");
         }
     })
 

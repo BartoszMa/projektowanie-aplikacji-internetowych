@@ -83,4 +83,8 @@ export class QuestionsService {
     async editClosedQuestion(question: ClosedQuestion): Promise<void> {
         await this.dbClosedConnector.editClosedQuestion(question)
     }
+
+    async deleteClosedQuestion(question_id: number): Promise<void> {
+        await this.dbClosedConnector.deleteClosedQuestion(question_id)
+    }
 }

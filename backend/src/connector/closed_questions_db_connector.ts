@@ -69,4 +69,13 @@ export class ClosedQuestionsDbConnector {
             throw new Error(`Error updating closed question: ${error}`);
         }
     }
+
+    async deleteClosedQuestion(question_id: number): Promise<void> {
+        try {
+            await this.collection.deleteOne({id: question_id});
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error deleting closed question: ${error}`);
+        }
+    }
 }
