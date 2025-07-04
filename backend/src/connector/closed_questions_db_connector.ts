@@ -1,9 +1,9 @@
-import {Collection, Db} from 'mongodb';
-import {ClosedQuestion} from "../types";
+import {Collection, Db, ObjectId} from 'mongodb';
+import {ClosedQuestion, ClosedQuestionResponse} from "../types";
 
 
 const COLLECTION_NAME = "closedQuestions";
-type ClosedQuestionWithType = ClosedQuestion & { type: 'closed' };
+type ClosedQuestionWithType = ClosedQuestionResponse & { type: 'closed' };
 
 export class ClosedQuestionsDbConnector {
     private readonly collection: Collection<ClosedQuestion>;
@@ -26,9 +26,9 @@ export class ClosedQuestionsDbConnector {
         }
     }
 
-    async getClosedQuestion(question_id: number): Promise<ClosedQuestionWithType> {
+    async getClosedQuestion(question_id: ObjectId): Promise<ClosedQuestionWithType> {
         try {
-            const result = await this.collection.findOne({id: question_id});
+            const result = await this.collection.findOne({_id: question_id});
             if (!result) throw new Error(`Question with id ${question_id} not found`);
             const typedResult = {
                 ...result,
@@ -50,29 +50,29 @@ export class ClosedQuestionsDbConnector {
         }
     }
 
-    async getClosedQuestionsIds(): Promise<number[]> {
+    async getClosedQuestionsIds(): Promise<ObjectId[]> {
         try {
-            const cursor = this.collection.find({}, { projection: { id: 1 } });
+            const cursor = this.collection.find({}, { projection: { _id: 1 } });
             const documents = await cursor.toArray();
-            return documents.map(q => q.id);
+            return documents.map(q => q._id);
         } catch (error) {
             console.error(error);
             throw new Error(`Error retrieving ClosedQuestionsIds: ${error}`);
         }
     }
 
-    async editClosedQuestion(question: ClosedQuestion): Promise<void> {
+    async editClosedQuestion(question: ClosedQuestionResponse): Promise<void> {
         try {
-            await this.collection.replaceOne({id: question.id}, question)
+            await this.collection.replaceOne({_id: question._id}, question)
         } catch (error) {
             console.error(error);
             throw new Error(`Error updating closed question: ${error}`);
         }
     }
 
-    async deleteClosedQuestion(question_id: number): Promise<void> {
+    async deleteClosedQuestion(question_id: ObjectId): Promise<void> {
         try {
-            await this.collection.deleteOne({id: question_id});
+            await this.collection.deleteOne({_id: question_id});
         } catch (error) {
             console.error(error);
             throw new Error(`Error deleting closed question: ${error}`);

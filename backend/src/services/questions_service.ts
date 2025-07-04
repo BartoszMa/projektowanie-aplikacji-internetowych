@@ -1,6 +1,14 @@
 import {ClosedQuestionsDbConnector} from "../connector/closed_questions_db_connector";
-import {AnswerResult, ClosedQuestion, OpenQuestion, UserAnswer} from "../types";
+import {
+    AnswerResult,
+    ClosedQuestion,
+    ClosedQuestionResponse,
+    OpenQuestion,
+    OpenQuestionResponse,
+    UserAnswer
+} from "../types";
 import {OpenQuestionsDbConnector} from "../connector/open_questions_db_connector";
+import {ObjectId} from "mongodb";
 
 export class QuestionsService {
     private readonly dbOpenConnector: OpenQuestionsDbConnector;
@@ -19,19 +27,19 @@ export class QuestionsService {
         return await this.dbOpenConnector.getRandomOpenQuestions(question_number);
     }
 
-    async getOpenQuestion(id: number): Promise<OpenQuestion> {
+    async getOpenQuestion(id: ObjectId): Promise<OpenQuestion> {
         return await this.dbOpenConnector.getOpenQuestion(id)
     }
 
-    async getClosedQuestion(id: number): Promise<ClosedQuestion> {
+    async getClosedQuestion(id: ObjectId): Promise<ClosedQuestion> {
         return await this.dbClosedConnector.getClosedQuestion(id);
     }
 
-    async getOpenQuestionsIds(): Promise<number[]> {
+    async getOpenQuestionsIds(): Promise<ObjectId[]> {
         return await this.dbOpenConnector.getOpenQuestionsIds();
     }
 
-    async getClosedQuestionsIds(): Promise<number[]> {
+    async getClosedQuestionsIds(): Promise<ObjectId[]> {
         return await this.dbClosedConnector.getClosedQuestionsIds();
     }
 
@@ -47,20 +55,20 @@ export class QuestionsService {
 
     async checkAnswers(answers: UserAnswer[]): Promise<AnswerResult[]> {
         return await Promise.all(
-            answers.map(async ({type, id, answer}) => {
+            answers.map(async ({type, _id, answer}) => {
                 if (type === 'open') {
-                    const found = await this.dbOpenConnector.getOpenQuestion(id);
+                    const found = await this.dbOpenConnector.getOpenQuestion(new ObjectId(_id));
                     return {
                         type,
-                        id,
+                        _id,
                         answer,
                         correctAnswer: found?.correctAnswer ?? null
                     };
                 }
-                const found = await this.dbClosedConnector.getClosedQuestion(id);
+                const found = await this.dbClosedConnector.getClosedQuestion(new ObjectId(_id));
                 return {
                     type,
-                    id,
+                    _id,
                     answer,
                     correctAnswer: found?.correctAnswer ?? null
                 };
@@ -76,19 +84,19 @@ export class QuestionsService {
         await this.dbClosedConnector.insertClosedQuestions([question])
     }
 
-    async editOpenQuestion(question: OpenQuestion): Promise<void> {
+    async editOpenQuestion(question: OpenQuestionResponse): Promise<void> {
         await this.dbOpenConnector.editOpenQuestion(question)
     }
 
-    async editClosedQuestion(question: ClosedQuestion): Promise<void> {
+    async editClosedQuestion(question: ClosedQuestionResponse): Promise<void> {
         await this.dbClosedConnector.editClosedQuestion(question)
     }
 
-    async deleteClosedQuestion(question_id: number): Promise<void> {
+    async deleteClosedQuestion(question_id: ObjectId): Promise<void> {
         await this.dbClosedConnector.deleteClosedQuestion(question_id)
     }
 
-    async deleteOpenQuestion(question_id: number): Promise<void> {
+    async deleteOpenQuestion(question_id: ObjectId): Promise<void> {
         await this.dbOpenConnector.deleteOpenQuestion(question_id)
     }
 }

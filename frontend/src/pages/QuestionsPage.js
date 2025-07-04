@@ -69,7 +69,7 @@ const QuestionsPage = () => {
     const handleSubmit = () => {
         const formattedAnswers = questions.map(q => ({
             type: q.type,
-            id: q.id,
+            _id: q._id,
             answer: answers[q._localId] || ''
         }));
 
@@ -84,7 +84,7 @@ const QuestionsPage = () => {
                 if (Array.isArray(resultData)) {
                     const resultMap = {};
                     resultData.forEach(r => {
-                        const index = questions.findIndex(q => q.id === r.id && q.type === r.type)
+                        const index = questions.findIndex(q => q._id === r._id && q.type === r.type)
                         const localId = questions[index]._localId;
                         if (localId) resultMap[localId] = r;
                     });

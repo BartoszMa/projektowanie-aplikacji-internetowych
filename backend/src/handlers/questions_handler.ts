@@ -1,9 +1,10 @@
 import { Router } from 'express';
-import {ClosedQuestion, OpenQuestion, UserAnswer} from '../types';
+import {ClosedQuestion, ClosedQuestionResponse, OpenQuestion, OpenQuestionResponse, UserAnswer} from '../types';
 import { ClosedQuestionsDbConnector } from '../connector/closed_questions_db_connector';
 import { OpenQuestionsDbConnector } from '../connector/open_questions_db_connector';
 import { MongoConnector } from '../connector/db_connector';
 import { QuestionsService } from '../services/questions_service';
+import {ObjectId} from "mongodb";
 
 export default function createRouter(mongo_connector: MongoConnector): Router {
     const router = Router();
@@ -77,8 +78,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
 
     router.get("/question/open/:id", async (req, res) => {
         try {
-            const id = parseInt(req.params.id, 10);
-            const result = await questionService.getOpenQuestion(id);
+            const result = await questionService.getOpenQuestion(new ObjectId(req.params.id));
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to get open question.' });
@@ -87,8 +87,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
 
     router.get("/question/closed/:id", async (req, res) => {
         try {
-            const id = parseInt(req.params.id, 10);
-            const result = await questionService.getClosedQuestion(id);
+            const result = await questionService.getClosedQuestion(new ObjectId(req.params.id));
             res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to get open question.' });
@@ -126,7 +125,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.put("/question/closed", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
-                const question: ClosedQuestion = req.body
+                const question: ClosedQuestionResponse = req.body
                 await questionService.editClosedQuestion(question);
                 res.status(200).json("Question put successfully.");
             } catch (error) {
@@ -140,7 +139,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.put("/question/open", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
-                const question: OpenQuestion = req.body
+                const question: OpenQuestionResponse = req.body
                 await questionService.editOpenQuestion(question);
                 res.status(200).json("Question put successfully.");
             } catch (error) {
@@ -154,8 +153,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.delete("/question/closed/:id", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
-                const id = parseInt(req.params.id, 10);
-                await questionService.deleteClosedQuestion(id)
+                await questionService.deleteClosedQuestion(new ObjectId(req.params.id))
                 res.status(200).json("Question deleted successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to delete closed question.' });
@@ -168,8 +166,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.delete("/question/open/:id", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
-                const id = parseInt(req.params.id, 10);
-                await questionService.deleteOpenQuestion(id)
+                await questionService.deleteOpenQuestion(new ObjectId(req.params.id))
                 res.status(200).json("Question deleted successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to delete closed question.' });

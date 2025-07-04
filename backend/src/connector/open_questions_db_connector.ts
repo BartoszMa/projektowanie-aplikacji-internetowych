@@ -1,9 +1,9 @@
-import {Collection, Db} from 'mongodb';
-import {OpenQuestion} from "../types";
+import {Collection, Db, ObjectId} from 'mongodb';
+import {OpenQuestion, OpenQuestionResponse} from "../types";
 
 
 const COLLECTION_NAME = "openQuestions";
-type OpenQuestionWithType = OpenQuestion & { type: 'open' };
+type OpenQuestionWithType = OpenQuestionResponse & { type: 'open' };
 
 export class OpenQuestionsDbConnector {
     private readonly collection: Collection<OpenQuestion>;
@@ -26,20 +26,20 @@ export class OpenQuestionsDbConnector {
         }
     }
 
-    async getOpenQuestionsIds(): Promise<number[]> {
+    async getOpenQuestionsIds(): Promise<ObjectId[]> {
         try {
-            const cursor = this.collection.find({}, { projection: { id: 1 } });
+            const cursor = this.collection.find({}, { projection: { _id: 1 } });
             const documents = await cursor.toArray();
-            return documents.map(q => q.id);
+            return documents.map(q => q._id);
         } catch (error) {
             console.error(error);
             throw new Error(`Error retrieving OpenQuestionsIds: ${error}`);
         }
     }
 
-    async getOpenQuestion(question_id: number): Promise<OpenQuestionWithType> {
+    async getOpenQuestion(question_id: ObjectId): Promise<OpenQuestionWithType> {
         try {
-            const result = await this.collection.findOne({id: question_id});
+            const result = await this.collection.findOne({_id: question_id});
             if (!result) throw new Error(`Question with id ${question_id} not found`);
             const typedResult = {
                 ...result,
@@ -61,18 +61,18 @@ export class OpenQuestionsDbConnector {
         }
     }
 
-    async editOpenQuestion(question: OpenQuestion): Promise<void> {
+    async editOpenQuestion(question: OpenQuestionResponse): Promise<void> {
         try {
-            await this.collection.replaceOne({id: question.id}, question)
+            await this.collection.replaceOne({_id: question._id}, question)
         } catch (error) {
             console.error(error);
             throw new Error(`Error updating open question: ${error}`);
         }
     }
 
-    async deleteOpenQuestion(question_id: number): Promise<void> {
+    async deleteOpenQuestion(question_id: ObjectId): Promise<void> {
         try {
-            await this.collection.deleteOne({id: question_id});
+            await this.collection.deleteOne({_id: question_id});
         } catch (error) {
             console.error(error);
             throw new Error(`Error deleting Open question: ${error}`);
