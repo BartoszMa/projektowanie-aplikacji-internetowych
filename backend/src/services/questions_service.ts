@@ -27,6 +27,10 @@ export class QuestionsService {
         return await this.dbOpenConnector.getOpenQuestionsIds();
     }
 
+    async getClosedQuestionsIds(): Promise<number[]> {
+        return await this.dbClosedConnector.getClosedQuestionsIds();
+    }
+
     async getMixedQuestions(question_number: number=10): Promise<(OpenQuestion | ClosedQuestion)[]> {
         const open_question_number = question_number - Math.floor(question_number / 2)
         const closed_question_number = question_number - open_question_number

@@ -66,6 +66,15 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
+    router.get("/get-questions-id/closed", async (_, res) => {
+        try {
+            const result = await questionService.getClosedQuestionsIds();
+            res.status(200).json(result);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to get close questions.' });
+        }
+    })
+
     router.get("/get-question/open/:id", async (req, res) => {
         try {
             const id = parseInt(req.params.id, 10);
