@@ -60,4 +60,13 @@ export class ClosedQuestionsDbConnector {
             throw new Error(`Error retrieving ClosedQuestionsIds: ${error}`);
         }
     }
+
+    async editClosedQuestion(question: ClosedQuestion): Promise<void> {
+        try {
+            await this.collection.updateOne({id: question.id}, question)
+        } catch (error) {
+            console.error(error);
+            throw new Error(`Error updating closed question: ${error}`);
+        }
+    }
 }

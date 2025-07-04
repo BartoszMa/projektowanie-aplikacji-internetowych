@@ -119,5 +119,18 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
+    router.put("/question/closed", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            try {
+                const question: ClosedQuestion = req.body
+                await questionService.editClosedQuestion(question);
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to update close question.' });
+            }
+        } else {
+            res.status(401).json("User not allowed");
+        }
+    })
+
     return router;
 }
