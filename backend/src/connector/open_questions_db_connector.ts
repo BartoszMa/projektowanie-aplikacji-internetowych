@@ -63,7 +63,7 @@ export class OpenQuestionsDbConnector {
 
     async editOpenQuestion(question: OpenQuestion): Promise<void> {
         try {
-            await this.collection.updateOne({id: question.id}, question)
+            await this.collection.replaceOne({id: question.id}, question)
         } catch (error) {
             console.error(error);
             throw new Error(`Error updating open question: ${error}`);

@@ -50,7 +50,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     });
 
     router.get('/authentication', async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             res.status(200).json({ "authenticated": true });
         } else {
             res.status(401).json({ "authenticated": false });
@@ -78,7 +78,8 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.get("/question/open/:id", async (req, res) => {
         try {
             const id = parseInt(req.params.id, 10);
-            await questionService.getOpenQuestion(id);
+            const result = await questionService.getOpenQuestion(id);
+            res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to get open question.' });
         }
@@ -87,17 +88,19 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     router.get("/question/closed/:id", async (req, res) => {
         try {
             const id = parseInt(req.params.id, 10);
-            await questionService.getClosedQuestion(id);
+            const result = await questionService.getClosedQuestion(id);
+            res.status(200).json(result);
         } catch (error) {
             res.status(500).json({ error: 'Failed to get open question.' });
         }
     })
 
     router.post("/question/open", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const question: OpenQuestion = req.body
                 await questionService.addOpenQuestion(question);
+                res.status(200).json("Question added successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to add question.' });
             }
@@ -107,10 +110,11 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.post("/question/closed", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const question: ClosedQuestion = req.body
                 await questionService.addClosedQuestion(question);
+                res.status(200).json("Question added successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to add question.' });
             }
@@ -120,10 +124,11 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.put("/question/closed", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const question: ClosedQuestion = req.body
                 await questionService.editClosedQuestion(question);
+                res.status(200).json("Question put successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to update close question.' });
             }
@@ -132,11 +137,12 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.put("/question/closed", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+    router.put("/question/open", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const question: OpenQuestion = req.body
                 await questionService.editOpenQuestion(question);
+                res.status(200).json("Question put successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to update open question.' });
             }
@@ -146,10 +152,11 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.delete("/question/closed/:id", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const id = parseInt(req.params.id, 10);
                 await questionService.deleteClosedQuestion(id)
+                res.status(200).json("Question deleted successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to delete closed question.' });
             }
@@ -159,10 +166,11 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.delete("/question/open/:id", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.username === "admin") {
+        if (req.headers.username === "admin" || req.headers.password === "admin") {
             try {
                 const id = parseInt(req.params.id, 10);
                 await questionService.deleteOpenQuestion(id)
+                res.status(200).json("Question deleted successfully.");
             } catch (error) {
                 res.status(500).json({ error: 'Failed to delete closed question.' });
             }
