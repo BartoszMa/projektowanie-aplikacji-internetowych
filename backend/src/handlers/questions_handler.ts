@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import {OpenQuestion, UserAnswer} from '../types';
+import {ClosedQuestion, OpenQuestion, UserAnswer} from '../types';
 import { ClosedQuestionsDbConnector } from '../connector/closed_questions_db_connector';
 import { OpenQuestionsDbConnector } from '../connector/open_questions_db_connector';
 import { MongoConnector } from '../connector/db_connector';
@@ -98,6 +98,19 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
             try {
                 const question: OpenQuestion = req.body
                 await questionService.addOpenQuestion(question);
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to add question.' });
+            }
+        } else {
+            res.status(401).json("User not allowed");
+        }
+    })
+
+    router.post("/question/closed", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            try {
+                const question: ClosedQuestion = req.body
+                await questionService.addClosedQuestion(question);
             } catch (error) {
                 res.status(500).json({ error: 'Failed to add question.' });
             }

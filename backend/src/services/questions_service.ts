@@ -71,4 +71,8 @@ export class QuestionsService {
     async addOpenQuestion(question: OpenQuestion): Promise<void> {
         await this.dbOpenConnector.insertOpenQuestions([question])
     }
+
+    async addClosedQuestion(question: ClosedQuestion): Promise<void> {
+        await this.dbClosedConnector.insertClosedQuestions([question])
+    }
 }
