@@ -57,7 +57,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.get("/get-questions-id/open", async (_, res) => {
+    router.get("/questions-id/open", async (_, res) => {
         try {
             const result = await questionService.getOpenQuestionsIds();
             res.status(200).json(result);
@@ -66,7 +66,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.get("/get-questions-id/closed", async (_, res) => {
+    router.get("/questions-id/closed", async (_, res) => {
         try {
             const result = await questionService.getClosedQuestionsIds();
             res.status(200).json(result);
@@ -75,7 +75,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.get("/get-question/open/:id", async (req, res) => {
+    router.get("/question/open/:id", async (req, res) => {
         try {
             const id = parseInt(req.params.id, 10);
             await questionService.getOpenQuestion(id);
@@ -84,7 +84,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
-    router.post("/add-question/open", async (req, res) => {
+    router.post("/question/open", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.username === "admin") {
             try {
                 const question: OpenQuestion = req.body
