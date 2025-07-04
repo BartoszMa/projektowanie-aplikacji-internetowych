@@ -84,6 +84,15 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
+    router.get("/question/closed/:id", async (req, res) => {
+        try {
+            const id = parseInt(req.params.id, 10);
+            await questionService.getClosedQuestion(id);
+        } catch (error) {
+            res.status(500).json({ error: 'Failed to get open question.' });
+        }
+    })
+
     router.post("/question/open", async (req, res) => {
         if (req.headers.username === "admin" || req.headers.username === "admin") {
             try {

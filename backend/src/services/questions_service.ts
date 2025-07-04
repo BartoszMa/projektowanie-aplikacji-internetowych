@@ -23,6 +23,10 @@ export class QuestionsService {
         return await this.dbOpenConnector.getOpenQuestion(id)
     }
 
+    async getClosedQuestion(id: number): Promise<ClosedQuestion> {
+        return await this.dbClosedConnector.getClosedQuestion(id);
+    }
+
     async getOpenQuestionsIds(): Promise<number[]> {
         return await this.dbOpenConnector.getOpenQuestionsIds();
     }
