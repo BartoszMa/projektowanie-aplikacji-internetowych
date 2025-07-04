@@ -51,4 +51,8 @@ export class QuestionsService {
             })
         );
     }
+
+    async addOpenQuestion(question: OpenQuestion): Promise<void> {
+        await this.dbOpenConnector.insertOpenQuestions([question])
+    }
 }

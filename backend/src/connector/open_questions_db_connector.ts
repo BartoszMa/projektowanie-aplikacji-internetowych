@@ -48,6 +48,5 @@ export class OpenQuestionsDbConnector {
             console.error(error);
             throw new Error(`Error adding OpenQuestions: ${error}`);
         }
-
     }
 }
