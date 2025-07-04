@@ -158,5 +158,18 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
+    router.delete("/question/open/:id", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            try {
+                const id = parseInt(req.params.id, 10);
+                await questionService.deleteOpenQuestion(id)
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to delete closed question.' });
+            }
+        } else {
+            res.status(401).json("User not allowed");
+        }
+    })
+
     return router;
 }
