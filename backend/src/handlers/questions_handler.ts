@@ -132,5 +132,16 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
         }
     })
 
+    router.put("/question/close", async (req, res) => {
+        if (req.headers.username === "admin" || req.headers.username === "admin") {
+            try {
+                const question: OpenQuestion = req.body
+                await questionService.editOpenQuestion(question);
+            } catch (error) {
+                res.status(500).json({ error: 'Failed to update open question.' });
+            }
+        }
+    })
+
     return router;
 }
