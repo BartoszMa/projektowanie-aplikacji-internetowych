@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useParams, useNavigate, Navigate } from "react-router-dom";
 import { IoReturnDownBack, IoRefresh } from "react-icons/io5";
 
 import axios from "axios";
@@ -25,7 +25,8 @@ const QuestionsPage = () => {
   const [score, setScore] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
+  const allowedTypes = ["closed-questions", "open-questions", "questions-mix"];
+  const isValidType = allowedTypes.includes(type);
   const navigate = useNavigate();
 
   const endpointMap = {
@@ -62,13 +63,14 @@ const QuestionsPage = () => {
   };
 
   useEffect(() => {
-    if (type in endpointMap) {
+    if (isValidType) {
       fetchQuestions();
-    } else {
-      setError("Nieznane zapytanie.");
-      setLoading(false);
     }
   }, [type]);
+
+  if (!isValidType) {
+    return <Navigate to="/404" replace />;
+  }
 
   const handleInputChange = (localId, value) => {
     setAnswers((prev) => ({ ...prev, [localId]: value }));

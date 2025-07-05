@@ -1,9 +1,17 @@
 import { Link, useNavigate } from "react-router-dom";
 import { Menu, IconButton } from "@chakra-ui/react";
 import { FaChevronDown } from "react-icons/fa";
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
 
 const Header = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, logout } = useContext(AuthContext);
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   const navLinks = [
     { label: "Pytania zamknięte", path: "/closed-questions" },
@@ -58,6 +66,14 @@ const Header = () => {
                 {link.label}
               </Menu.Item>
             ))}
+            {isLoggedIn && (
+              <>
+                <Menu.Separator />
+                <Menu.Item onClick={handleLogout} value="logout">
+                  Wyloguj
+                </Menu.Item>
+              </>
+            )}
           </Menu.Content>
         </Menu.Positioner>
       </Menu.Root>
