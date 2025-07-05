@@ -1,9 +1,17 @@
-import React from 'react';
-
 const Footer = () => (
-    <footer style={{ padding: '1rem', backgroundColor: '#f5f5f5', textAlign: 'center', marginTop: '2rem' }}>
-        <p>&copy; 2025 Test Angielski</p>
-    </footer>
+  <footer
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      padding: "0.5rem",
+      fontFamily: "Segoe UI, sans-serif",
+    }}
+  >
+    <p style={{ margin: 0 }}>
+      &copy; 2025 Angielszczyzna. Wszelkie prawa zastrzeżone.
+    </p>
+  </footer>
 );
 
 export default Footer;
