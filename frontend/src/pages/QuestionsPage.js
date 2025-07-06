@@ -30,9 +30,9 @@ const QuestionsPage = () => {
   const navigate = useNavigate();
 
   const endpointMap = {
-    "closed-questions": "api/closed-questions",
-    "open-questions": "api/open-questions",
-    "questions-mix": "api/questions-mix",
+    "closed-questions": "http://localhost:4200/api/closed-questions",
+    "open-questions": "http://localhost:4200/api/open-questions",
+    "questions-mix": "http://localhost:4200/api/questions-mix",
   };
 
   const fetchQuestions = () => {

@@ -18,10 +18,19 @@ const Admin = () => {
     transition: "all 0.25s ease-in-out",
   };
 
-  const modes = [
-    { label: "Pytania zamknięte", path: "/closed-questions" },
-    { label: "Pytania otwarte", path: "/open-questions" },
-    { label: "Mix", path: "/questions-mix" },
+  const adminActions = [
+    {
+      label: "Zarządzaj pytaniami zamkniętymi",
+      path: "/admin/closed",
+    },
+    {
+      label: "Zarządzaj pytaniami otwartymi",
+      path: "/admin/open",
+    },
+    {
+      label: "Dodaj nowe pytanie",
+      path: "/admin/add",
+    },
   ];
 
   return (
@@ -33,22 +42,12 @@ const Admin = () => {
       textAlign="center"
     >
       <Box>
-        <Text
-          fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
-          color="gray.600"
-          mb="2rem"
-          px={{ base: 2, sm: 4 }}
-          mt={4}
-        >
-          Z nami angielski jest prostszy! Sprawdź swoje umiejętności i poprawiaj
-          je każdego dnia.
-        </Text>
         <Heading
           fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
           color="#00247d"
-          mb="2.5rem"
+          mb="2rem"
         >
-          Wybierz tryb testu
+          Panel administratora
         </Heading>
 
         <Stack
@@ -58,9 +57,9 @@ const Admin = () => {
           spacing="4rem"
           wrap="wrap"
         >
-          {modes.map((mode) => (
+          {adminActions.map((action) => (
             <Card.Root
-              key={mode.path}
+              key={action.path}
               maxW="400px"
               minW="250px"
               cursor="pointer"
@@ -68,7 +67,7 @@ const Admin = () => {
               boxShadow="md"
               _hover={cardHoverStyle}
               transition="all 0.25s ease-in-out"
-              onClick={() => navigate(mode.path)}
+              onClick={() => navigate(action.path)}
             >
               <Card.Body p="1.5rem">
                 <Button
@@ -78,7 +77,7 @@ const Admin = () => {
                   fontSize="lg"
                   fontFamily="Segoe UI, sans-serif"
                 >
-                  {mode.label}
+                  {action.label}
                 </Button>
               </Card.Body>
             </Card.Root>
