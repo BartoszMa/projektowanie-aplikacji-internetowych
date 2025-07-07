@@ -85,11 +85,22 @@ export class QuestionsService {
     }
 
     async editOpenQuestion(question: OpenQuestionResponse): Promise<void> {
-        await this.dbOpenConnector.editOpenQuestion(question)
+        const question_without_id = {
+            question: question.question,
+            correctAnswer: question.correctAnswer,
+        } as OpenQuestion
+
+        await this.dbOpenConnector.editOpenQuestion(new ObjectId(question._id), question_without_id)
     }
 
     async editClosedQuestion(question: ClosedQuestionResponse): Promise<void> {
-        await this.dbClosedConnector.editClosedQuestion(question)
+        const question_without_id = {
+            question: question.question,
+            answers: question.answers,
+            correctAnswer: question.correctAnswer,
+        } as ClosedQuestion;
+
+        await this.dbClosedConnector.editClosedQuestion(new ObjectId(question._id), question_without_id)
     }
 
     async deleteClosedQuestion(question_id: ObjectId): Promise<void> {

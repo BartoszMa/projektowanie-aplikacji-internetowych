@@ -61,9 +61,9 @@ export class ClosedQuestionsDbConnector {
         }
     }
 
-    async editClosedQuestion(question: ClosedQuestionResponse): Promise<void> {
+    async editClosedQuestion( id: ObjectId, question: ClosedQuestion): Promise<void> {
         try {
-            await this.collection.replaceOne({_id: question._id}, question)
+            await this.collection.replaceOne({_id: id}, question)
         } catch (error) {
             console.error(error);
             throw new Error(`Error updating closed question: ${error}`);
