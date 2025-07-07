@@ -1,5 +1,3 @@
-// TODO: remove when real data is present
-
 import { ClosedQuestion, OpenQuestion } from './types';
 
 export const closedQuestions: ClosedQuestion[] = [
