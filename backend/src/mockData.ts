@@ -50,7 +50,57 @@ export const closedQuestions: ClosedQuestion[] = [
         question: "Co znaczy 'apple'?",
         answers: ["banan", "pomarańcza", "jabłko", "gruszka"],
         correctAnswer: "jabłko"
-    }
+    },
+    {
+        question: "Jak przetłumaczyć 'sun'?",
+        answers: ["księżyc", "słońce", "gwiazda", "chmura"],
+        correctAnswer: "słońce"
+    },
+    {
+        question: "Wybierz przymiotnik",
+        answers: ["quick", "run", "table", "read"],
+        correctAnswer: "quick"
+    },
+    {
+        question: "Jak przetłumaczyć 'friend'?",
+        answers: ["wróg", "kolega", "sąsiad", "nauczyciel"],
+        correctAnswer: "kolega"
+    },
+    {
+        question: "Wybierz poprawne tłumaczenie słowa 'bread'",
+        answers: ["masło", "ser", "chleb", "mleko"],
+        correctAnswer: "chleb"
+    },
+    {
+        question: "Jak przetłumaczyć 'school'?",
+        answers: ["szkoła", "sklep", "kino", "muzeum"],
+        correctAnswer: "szkoła"
+    },
+    {
+        question: "Wybierz przeciwieństwo słowa 'big'",
+        answers: ["huge", "wide", "small", "tall"],
+        correctAnswer: "small"
+    },
+    {
+        question: "Co oznacza słowo 'happy'?",
+        answers: ["smutny", "zły", "szczęśliwy", "zmęczony"],
+        correctAnswer: "szczęśliwy"
+    },
+    {
+        question: "Jak przetłumaczyć 'water'?",
+        answers: ["woda", "wino", "sok", "piwo"],
+        correctAnswer: "woda"
+    },
+    {
+        question: "Które słowo to czasownik?",
+        answers: ["walk", "blue", "apple", "chair"],
+        correctAnswer: "walk"
+    },
+    {
+        question: "Co znaczy 'mother'?",
+        answers: ["ojciec", "siostra", "matka", "brat"],
+        correctAnswer: "matka"
+    },
 ];
 
 export const openQuestions: OpenQuestion[] = [
@@ -93,5 +143,45 @@ export const openQuestions: OpenQuestion[] = [
     {
         question: "Przetłumacz na angielski: 'On mieszka w Londynie'",
         correctAnswer: "He lives in London"
-    }
+    },
+    {
+        question: "Przetłumacz na angielski: 'Ona ma brata'",
+        correctAnswer: "She has a brother"
+    },
+    {
+        question: "Uzupełnij zdanie poprawnym czasem: I ___ already ___ my homework.",
+        correctAnswer: "have done"
+    },
+    {
+        question: "Uzupełnij zdanie: He is interested ___ history.",
+        correctAnswer: "in"
+    },
+    {
+        question: "Uzupełnij zdanie: I look forward ___ from you.",
+        correctAnswer: "to hearing"
+    },
+    {
+        question: "Przetłumacz na angielski: 'Czy możesz mi pomóc?'",
+        correctAnswer: "Can you help me?"
+    },
+    {
+        question: "Uzupełnij zdanie poprawnym czasem: By the time you arrive, I ___ the report.",
+        correctAnswer: "will have finished"
+    },
+    {
+        question: "Uzupełnij zdanie poprawnym słowem: She is ___ than her sister.",
+        correctAnswer: "taller"
+    },
+    {
+        question: "Uzupełnij zdanie odpowiednim słowem: This book was written ___ J.K. Rowling.",
+        correctAnswer: "by"
+    },
+    {
+        question: "Przetłumacz na angielski: 'Nie wiem, gdzie on mieszka'",
+        correctAnswer: "I don't know where he lives"
+    },
+    {
+        question: "Przetłumacz na angielski: 'Oni nie pracują w tej firmie'",
+        correctAnswer: "They don't work in this company"
+    },
 ];
