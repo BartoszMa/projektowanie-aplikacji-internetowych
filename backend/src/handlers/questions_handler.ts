@@ -51,7 +51,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     });
 
     router.get('/authentication', async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             res.status(200).json({ "authenticated": true });
         } else {
             res.status(401).json({ "authenticated": false });
@@ -95,7 +95,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.post("/question/open", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 const question: OpenQuestion = req.body
                 await questionService.addOpenQuestion(question);
@@ -109,7 +109,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.post("/question/closed", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 const question: ClosedQuestion = req.body
                 await questionService.addClosedQuestion(question);
@@ -123,7 +123,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.put("/question/closed", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 const question: ClosedQuestionResponse = req.body
                 await questionService.editClosedQuestion(question);
@@ -137,7 +137,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.put("/question/open", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 const question: OpenQuestionResponse = req.body
                 await questionService.editOpenQuestion(question);
@@ -151,7 +151,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.delete("/question/closed/:id", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 await questionService.deleteClosedQuestion(new ObjectId(req.params.id))
                 res.status(200).json("Question deleted successfully.");
@@ -164,7 +164,7 @@ export default function createRouter(mongo_connector: MongoConnector): Router {
     })
 
     router.delete("/question/open/:id", async (req, res) => {
-        if (req.headers.username === "admin" || req.headers.password === "admin") {
+        if (req.headers.username === "admin" && req.headers.password === "admin") {
             try {
                 await questionService.deleteOpenQuestion(new ObjectId(req.params.id))
                 res.status(200).json("Question deleted successfully.");
