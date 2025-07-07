@@ -5,51 +5,24 @@ import {
   Input,
   Button,
   Stack,
-  Spinner,
   Flex,
   IconButton,
 } from "@chakra-ui/react";
 import { IoReturnDownBack } from "react-icons/io5";
-import { useParams, useNavigate } from "react-router-dom";
-import { useState, useEffect, useContext } from "react";
+import { useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
-import { toaster } from "../components/ui/toaster";
+import { AuthContext } from "../../context/AuthContext";
+import { toaster } from "../../components/ui/toaster";
 
-const EditClosedQuestion = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { username } = useContext(AuthContext);
-
+const AddClosedQuestion = () => {
   const [questionText, setQuestionText] = useState("");
   const [answers, setAnswers] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
-  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { username } = useContext(AuthContext);
 
-  useEffect(() => {
-    const fetchQuestion = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:4200/api/question/closed/${id}`
-        );
-        const data = response.data;
-        setQuestionText(data.question || "");
-        setAnswers(data.answers || ["", "", "", ""]);
-        setCorrectAnswer(data.correctAnswer || "");
-      } catch (err) {
-        toaster.error({
-          title: "Błąd",
-          description: "Nie udało się pobrać pytania.",
-        });
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchQuestion();
-  }, [id]);
-
-  const handleUpdate = async () => {
+  const handleSubmit = async () => {
     if (
       !questionText.trim() ||
       answers.some((a) => !a.trim()) ||
@@ -62,11 +35,18 @@ const EditClosedQuestion = () => {
       return;
     }
 
+    if (!answers.includes(correctAnswer)) {
+      toaster.error({
+        title: "Błąd",
+        description: "Poprawna odpowiedź musi być jedną z podanych opcji.",
+      });
+      return;
+    }
+
     try {
-      await axios.put(
+      await axios.post(
         "http://localhost:4200/api/question/closed",
         {
-          _id: id,
           question: questionText,
           answers,
           correctAnswer,
@@ -79,33 +59,25 @@ const EditClosedQuestion = () => {
       );
 
       toaster.success({
-        title: "Zapisano",
-        description: "Pytanie zostało zaktualizowane.",
+        title: "Dodano pytanie",
+        description: "Nowe pytanie zostało zapisane.",
       });
 
       navigate("/admin/closed");
     } catch (err) {
       toaster.error({
         title: "Błąd",
-        description: "Nie udało się zapisać zmian.",
+        description: "Nie udało się dodać pytania.",
       });
     }
   };
 
-  if (loading) {
-    return (
-      <Flex justify="center" align="center" minH="60vh">
-        <Spinner size="xl" />
-      </Flex>
-    );
-  }
-
   return (
     <Box maxW="700px" mx="auto" py={6} px={4}>
       <Flex mb={6} justify="space-between" align="center">
-        <Heading size="lg">Edytuj pytanie zamknięte</Heading>
+        <Heading size="lg">Dodaj pytanie zamknięte</Heading>
         <IconButton
-          onClick={() => navigate("/admin/closed")}
+          onClick={() => navigate("/admin")}
           variant={"ghost"}
           size="md"
           aria-label="Powrót"
@@ -113,10 +85,11 @@ const EditClosedQuestion = () => {
           <IoReturnDownBack />
         </IconButton>
       </Flex>
+
       <Textarea
+        placeholder="Treść pytania"
         value={questionText}
         onChange={(e) => setQuestionText(e.target.value)}
-        placeholder="Treść pytania"
         rows={4}
         mb={4}
       />
@@ -137,17 +110,17 @@ const EditClosedQuestion = () => {
       </Stack>
 
       <Input
-        placeholder="Poprawna odpowiedź (musi być identyczna z jedną z powyższych)"
+        placeholder="Poprawna odpowiedź (musi być jedną z powyższych)"
         value={correctAnswer}
         onChange={(e) => setCorrectAnswer(e.target.value)}
         mb={6}
       />
 
-      <Button colorScheme="teal" onClick={handleUpdate}>
-        Zapisz zmiany
+      <Button colorScheme="blue" onClick={handleSubmit}>
+        Dodaj pytanie
       </Button>
     </Box>
   );
 };
 
-export default EditClosedQuestion;
+export default AddClosedQuestion;

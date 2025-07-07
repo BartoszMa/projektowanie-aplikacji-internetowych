@@ -4,24 +4,25 @@ import {
   Textarea,
   Input,
   Button,
+  Stack,
   Spinner,
   Flex,
   IconButton,
 } from "@chakra-ui/react";
 import { IoReturnDownBack } from "react-icons/io5";
-import { toaster } from "../components/ui/toaster";
-
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import { toaster } from "../../components/ui/toaster";
 
-const EditOpenQuestion = () => {
+const EditClosedQuestion = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { username } = useContext(AuthContext);
 
   const [questionText, setQuestionText] = useState("");
+  const [answers, setAnswers] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const [loading, setLoading] = useState(true);
 
@@ -29,11 +30,13 @@ const EditOpenQuestion = () => {
     const fetchQuestion = async () => {
       try {
         const response = await axios.get(
-          `http://localhost:4200/api/question/open/${id}`
+          `http://localhost:4200/api/question/closed/${id}`
         );
-        setQuestionText(response.data.question || "");
-        setCorrectAnswer(response.data.correctAnswer || "");
-      } catch (error) {
+        const data = response.data;
+        setQuestionText(data.question || "");
+        setAnswers(data.answers || ["", "", "", ""]);
+        setCorrectAnswer(data.correctAnswer || "");
+      } catch (err) {
         toaster.error({
           title: "Błąd",
           description: "Nie udało się pobrać pytania.",
@@ -47,12 +50,25 @@ const EditOpenQuestion = () => {
   }, [id]);
 
   const handleUpdate = async () => {
+    if (
+      !questionText.trim() ||
+      answers.some((a) => !a.trim()) ||
+      !correctAnswer.trim()
+    ) {
+      toaster.error({
+        title: "Błąd",
+        description: "Wszystkie pola muszą być uzupełnione.",
+      });
+      return;
+    }
+
     try {
       await axios.put(
-        "http://localhost:4200/api/question/open",
+        "http://localhost:4200/api/question/closed",
         {
           _id: id,
           question: questionText,
+          answers,
           correctAnswer,
         },
         {
@@ -63,15 +79,15 @@ const EditOpenQuestion = () => {
       );
 
       toaster.success({
-        title: "Zapisano zmiany",
+        title: "Zapisano",
         description: "Pytanie zostało zaktualizowane.",
       });
 
-      navigate("/admin/open");
-    } catch (error) {
+      navigate("/admin/closed");
+    } catch (err) {
       toaster.error({
         title: "Błąd",
-        description: "Nie udało się zaktualizować pytania.",
+        description: "Nie udało się zapisać zmian.",
       });
     }
   };
@@ -87,9 +103,9 @@ const EditOpenQuestion = () => {
   return (
     <Box maxW="700px" mx="auto" py={6} px={4}>
       <Flex mb={6} justify="space-between" align="center">
-        <Heading size="lg">Edytuj pytanie otwarte</Heading>
+        <Heading size="lg">Edytuj pytanie zamknięte</Heading>
         <IconButton
-          onClick={() => navigate("/admin/open")}
+          onClick={() => navigate("/admin/closed")}
           variant={"ghost"}
           size="md"
           aria-label="Powrót"
@@ -100,15 +116,30 @@ const EditOpenQuestion = () => {
       <Textarea
         value={questionText}
         onChange={(e) => setQuestionText(e.target.value)}
-        placeholder="Wpisz treść pytania"
-        rows={6}
+        placeholder="Treść pytania"
+        rows={4}
         mb={4}
       />
 
+      <Stack spacing={3} mb={4}>
+        {answers.map((ans, idx) => (
+          <Input
+            key={idx}
+            placeholder={`Odpowiedź ${idx + 1}`}
+            value={ans}
+            onChange={(e) => {
+              const updated = [...answers];
+              updated[idx] = e.target.value;
+              setAnswers(updated);
+            }}
+          />
+        ))}
+      </Stack>
+
       <Input
+        placeholder="Poprawna odpowiedź (musi być identyczna z jedną z powyższych)"
         value={correctAnswer}
         onChange={(e) => setCorrectAnswer(e.target.value)}
-        placeholder="Wpisz poprawną odpowiedź"
         mb={6}
       />
 
@@ -119,4 +150,4 @@ const EditOpenQuestion = () => {
   );
 };
 
-export default EditOpenQuestion;
+export default EditClosedQuestion;

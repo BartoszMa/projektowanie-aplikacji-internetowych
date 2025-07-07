@@ -9,7 +9,7 @@ import {
   Flex,
 } from "@chakra-ui/react";
 
-const Admin = () => {
+const NavigationPanel = ({ heading, description, actions }) => {
   const navigate = useNavigate();
 
   const cardHoverStyle = {
@@ -17,21 +17,6 @@ const Admin = () => {
     boxShadow: "lg",
     transition: "all 0.25s ease-in-out",
   };
-
-  const adminActions = [
-    {
-      label: "Zarządzaj pytaniami zamkniętymi",
-      path: "/admin/closed",
-    },
-    {
-      label: "Zarządzaj pytaniami otwartymi",
-      path: "/admin/open",
-    },
-    {
-      label: "Dodaj nowe pytanie",
-      path: "/admin/add",
-    },
-  ];
 
   return (
     <Flex
@@ -42,12 +27,23 @@ const Admin = () => {
       textAlign="center"
     >
       <Box>
+        {description && (
+          <Text
+            fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
+            color="gray.600"
+            mb="2rem"
+            px={{ base: 2, sm: 4 }}
+            mt={4}
+          >
+            {description}
+          </Text>
+        )}
         <Heading
           fontSize={{ base: "lg", sm: "xl", md: "2xl", lg: "3xl" }}
           color="#00247d"
-          mb="2rem"
+          mb="2.5rem"
         >
-          Panel administratora
+          {heading}
         </Heading>
 
         <Stack
@@ -57,7 +53,7 @@ const Admin = () => {
           spacing="4rem"
           wrap="wrap"
         >
-          {adminActions.map((action) => (
+          {actions.map((action) => (
             <Card.Root
               key={action.path}
               maxW="400px"
@@ -88,4 +84,4 @@ const Admin = () => {
   );
 };
 
-export default Admin;
+export default NavigationPanel;

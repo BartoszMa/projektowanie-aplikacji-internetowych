@@ -16,7 +16,7 @@ const ProtectedAdminRoute = ({ children }) => {
   }
 
   if (!isLoggedIn || username !== "admin") {
-    return <Navigate to="/404" replace />;
+    return <Navigate to="/" replace />;
   }
 
   return children;

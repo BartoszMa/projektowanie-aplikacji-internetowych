@@ -4,18 +4,19 @@ import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import Admin from "./pages/Admin";
+import Admin from "./pages/admin/Admin";
 import NotFound from "./pages/NotFound";
 import QuestionsPage from "./pages/QuestionsPage";
 import ProtectedAdminRoute from "./components/ProtectedAdminRoute";
 
 import { Navigate } from "react-router-dom";
-import AdminOpenQuestions from "./pages/AdminOpenQuestions";
-import EditOpenQuestion from "./pages/EditOpenQuestion";
-import AddOpenQuestion from "./pages/AddOpenQuestion";
-import AdminClosedQuestions from "./pages/AdminClosedQuestions";
-import EditClosedQuestion from "./pages/EditClosedQuestion";
-import AddClosedQuestion from "./pages/AddClosedQuestion";
+import AdminOpenQuestions from "./pages/admin/AdminOpenQuestions";
+import EditOpenQuestion from "./pages/admin/EditOpenQuestion";
+import AddOpenQuestion from "./pages/admin/AddOpenQuestion";
+import AdminClosedQuestions from "./pages/admin/AdminClosedQuestions";
+import EditClosedQuestion from "./pages/admin/EditClosedQuestion";
+import AddClosedQuestion from "./pages/admin/AddClosedQuestion";
+import AddQuestion from "./pages/admin/AddQuestion";
 
 function App() {
   return (
@@ -62,6 +63,14 @@ function App() {
               element={
                 <ProtectedAdminRoute>
                   <AddOpenQuestion />
+                </ProtectedAdminRoute>
+              }
+            />
+            <Route
+              path="/admin/add"
+              element={
+                <ProtectedAdminRoute>
+                  <AddQuestion />
                 </ProtectedAdminRoute>
               }
             />

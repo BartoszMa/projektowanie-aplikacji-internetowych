@@ -11,9 +11,9 @@ import {
 import { IoReturnDownBack } from "react-icons/io5";
 import { useEffect, useState, useContext } from "react";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { toaster } from "../components/ui/toaster";
+import { toaster } from "../../components/ui/toaster";
 
 const AdminOpenQuestions = () => {
   const [questions, setQuestions] = useState([]);

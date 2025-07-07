@@ -4,7 +4,6 @@ import {
   Textarea,
   Input,
   Button,
-  Stack,
   Flex,
   IconButton,
 } from "@chakra-ui/react";
@@ -12,43 +11,29 @@ import { IoReturnDownBack } from "react-icons/io5";
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { AuthContext } from "../context/AuthContext";
-import { toaster } from "../components/ui/toaster";
+import { AuthContext } from "../../context/AuthContext";
+import { toaster } from "../../components/ui/toaster";
 
-const AddClosedQuestion = () => {
+const AddOpenQuestion = () => {
   const [questionText, setQuestionText] = useState("");
-  const [answers, setAnswers] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const navigate = useNavigate();
   const { username } = useContext(AuthContext);
 
   const handleSubmit = async () => {
-    if (
-      !questionText.trim() ||
-      answers.some((a) => !a.trim()) ||
-      !correctAnswer.trim()
-    ) {
+    if (!questionText.trim() || !correctAnswer.trim()) {
       toaster.error({
         title: "Błąd",
-        description: "Wszystkie pola muszą być uzupełnione.",
-      });
-      return;
-    }
-
-    if (!answers.includes(correctAnswer)) {
-      toaster.error({
-        title: "Błąd",
-        description: "Poprawna odpowiedź musi być jedną z podanych opcji.",
+        description: "Pytanie i odpowiedź nie mogą być puste.",
       });
       return;
     }
 
     try {
       await axios.post(
-        "http://localhost:4200/api/question/closed",
+        "http://localhost:4200/api/question/open",
         {
           question: questionText,
-          answers,
           correctAnswer,
         },
         {
@@ -63,7 +48,7 @@ const AddClosedQuestion = () => {
         description: "Nowe pytanie zostało zapisane.",
       });
 
-      navigate("/admin/closed");
+      navigate("/admin/open");
     } catch (err) {
       toaster.error({
         title: "Błąd",
@@ -75,7 +60,7 @@ const AddClosedQuestion = () => {
   return (
     <Box maxW="700px" mx="auto" py={6} px={4}>
       <Flex mb={6} justify="space-between" align="center">
-        <Heading size="lg">Dodaj pytanie zamknięte</Heading>
+        <Heading size="lg">Dodaj nowe pytanie otwarte</Heading>
         <IconButton
           onClick={() => navigate("/admin")}
           variant={"ghost"}
@@ -90,27 +75,12 @@ const AddClosedQuestion = () => {
         placeholder="Treść pytania"
         value={questionText}
         onChange={(e) => setQuestionText(e.target.value)}
-        rows={4}
+        rows={6}
         mb={4}
       />
 
-      <Stack spacing={3} mb={4}>
-        {answers.map((ans, idx) => (
-          <Input
-            key={idx}
-            placeholder={`Odpowiedź ${idx + 1}`}
-            value={ans}
-            onChange={(e) => {
-              const updated = [...answers];
-              updated[idx] = e.target.value;
-              setAnswers(updated);
-            }}
-          />
-        ))}
-      </Stack>
-
       <Input
-        placeholder="Poprawna odpowiedź (musi być jedną z powyższych)"
+        placeholder="Poprawna odpowiedź"
         value={correctAnswer}
         onChange={(e) => setCorrectAnswer(e.target.value)}
         mb={6}
@@ -123,4 +93,4 @@ const AddClosedQuestion = () => {
   );
 };
 
-export default AddClosedQuestion;
+export default AddOpenQuestion;
