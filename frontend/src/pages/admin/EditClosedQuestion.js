@@ -19,7 +19,7 @@ import { toaster } from "../../components/ui/toaster";
 const EditClosedQuestion = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { username } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
   const [questionText, setQuestionText] = useState("");
   const [answers, setAnswers] = useState(["", "", "", ""]);
@@ -71,7 +71,7 @@ const EditClosedQuestion = () => {
         },
         {
           headers: {
-            username,
+            token,
           },
         }
       );

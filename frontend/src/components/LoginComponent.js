@@ -27,8 +27,8 @@ const LoginComponent = () => {
       });
       console.log(response);
 
-      if (response.status === 200 && response.data.authenticated === true) {
-        login(username);
+      if (response?.status === 200 && response.data?.token) {
+        login(username, response.data.token);
         toaster.success({
           title: "Zalogowano",
           description: `Witaj, ${username}`,

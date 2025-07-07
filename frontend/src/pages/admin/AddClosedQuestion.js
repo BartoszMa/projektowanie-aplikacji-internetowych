@@ -20,7 +20,7 @@ const AddClosedQuestion = () => {
   const [answers, setAnswers] = useState(["", "", "", ""]);
   const [correctAnswer, setCorrectAnswer] = useState("");
   const navigate = useNavigate();
-  const { username } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
   const handleSubmit = async () => {
     if (
@@ -53,7 +53,7 @@ const AddClosedQuestion = () => {
         },
         {
           headers: {
-            username,
+            token,
           },
         }
       );

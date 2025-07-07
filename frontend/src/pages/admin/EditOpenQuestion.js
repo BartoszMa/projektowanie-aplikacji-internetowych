@@ -19,7 +19,7 @@ import { AuthContext } from "../../context/AuthContext";
 const EditOpenQuestion = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { username } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
 
   const [questionText, setQuestionText] = useState("");
   const [correctAnswer, setCorrectAnswer] = useState("");
@@ -55,7 +55,7 @@ const EditOpenQuestion = () => {
         },
         {
           headers: {
-            username,
+            token,
           },
         }
       );

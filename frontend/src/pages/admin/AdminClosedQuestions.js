@@ -18,7 +18,7 @@ import { toaster } from "../../components/ui/toaster";
 const AdminClosedQuestions = () => {
   const [questions, setQuestions] = useState([]);
   const [loading, setLoading] = useState(true);
-  const { username } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const fetchQuestions = async () => {
@@ -47,7 +47,7 @@ const AdminClosedQuestions = () => {
   const handleDelete = async (id) => {
     try {
       await axios.delete(`/api/question/closed/${id}`, {
-        headers: { username },
+        headers: { token },
       });
 
       toaster.success({
