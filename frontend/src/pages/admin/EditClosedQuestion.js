@@ -29,9 +29,7 @@ const EditClosedQuestion = () => {
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4200/api/question/closed/${id}`
-        );
+        const response = await axios.get(`/api/question/closed/${id}`);
         const data = response.data;
         setQuestionText(data.question || "");
         setAnswers(data.answers || ["", "", "", ""]);
@@ -64,7 +62,7 @@ const EditClosedQuestion = () => {
 
     try {
       await axios.put(
-        "http://localhost:4200/api/question/closed",
+        "/api/question/closed",
         {
           _id: id,
           question: questionText,

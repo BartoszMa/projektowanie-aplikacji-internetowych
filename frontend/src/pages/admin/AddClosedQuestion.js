@@ -45,7 +45,7 @@ const AddClosedQuestion = () => {
 
     try {
       await axios.post(
-        "http://localhost:4200/api/question/closed",
+        "/api/question/closed",
         {
           question: questionText,
           answers,

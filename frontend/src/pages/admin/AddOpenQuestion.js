@@ -31,7 +31,7 @@ const AddOpenQuestion = () => {
 
     try {
       await axios.post(
-        "http://localhost:4200/api/question/open",
+        "/api/question/open",
         {
           question: questionText,
           correctAnswer,

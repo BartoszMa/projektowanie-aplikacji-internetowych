@@ -23,13 +23,11 @@ const AdminClosedQuestions = () => {
 
   const fetchQuestions = async () => {
     try {
-      const idsResponse = await axios.get(
-        "http://localhost:4200/api/questions-id/closed"
-      );
+      const idsResponse = await axios.get("/api/questions-id/closed");
       const ids = idsResponse.data;
 
       const questionPromises = ids.map((id) =>
-        axios.get(`http://localhost:4200/api/question/closed/${id}`)
+        axios.get(`/api/question/closed/${id}`)
       );
 
       const questionResults = await Promise.all(questionPromises);
@@ -48,7 +46,7 @@ const AdminClosedQuestions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:4200/api/question/closed/${id}`, {
+      await axios.delete(`/api/question/closed/${id}`, {
         headers: { username },
       });
 

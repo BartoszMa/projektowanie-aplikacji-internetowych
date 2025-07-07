@@ -23,13 +23,11 @@ const AdminOpenQuestions = () => {
   const navigate = useNavigate();
   const fetchQuestions = async () => {
     try {
-      const idsResponse = await axios.get(
-        "http://localhost:4200/api/questions-id/open"
-      );
+      const idsResponse = await axios.get("/api/questions-id/open");
       const ids = idsResponse.data;
 
       const questionPromises = ids.map((id) =>
-        axios.get(`http://localhost:4200/api/question/open/${id}`)
+        axios.get(`/api/question/open/${id}`)
       );
 
       const questionResults = await Promise.all(questionPromises);
@@ -48,7 +46,7 @@ const AdminOpenQuestions = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:4200/api/question/open/${id}`, {
+      await axios.delete(`/api/question/open/${id}`, {
         headers: { username },
       });
 

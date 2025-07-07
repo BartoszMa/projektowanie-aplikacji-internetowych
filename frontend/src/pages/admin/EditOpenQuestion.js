@@ -28,9 +28,7 @@ const EditOpenQuestion = () => {
   useEffect(() => {
     const fetchQuestion = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:4200/api/question/open/${id}`
-        );
+        const response = await axios.get(`/api/question/open/${id}`);
         setQuestionText(response.data.question || "");
         setCorrectAnswer(response.data.correctAnswer || "");
       } catch (error) {
@@ -49,7 +47,7 @@ const EditOpenQuestion = () => {
   const handleUpdate = async () => {
     try {
       await axios.put(
-        "http://localhost:4200/api/question/open",
+        "/api/question/open",
         {
           _id: id,
           question: questionText,

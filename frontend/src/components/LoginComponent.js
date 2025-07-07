@@ -6,7 +6,7 @@ import { useContext } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-const LoginComponent = ({ onLoginSuccess }) => {
+const LoginComponent = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -18,16 +18,13 @@ const LoginComponent = ({ onLoginSuccess }) => {
     setError("");
 
     try {
-      const response = await axios.get(
-        "http://localhost:4200/api/authentication",
-        {
-          headers: {
-            username,
-            password,
-          },
-          validateStatus: (status) => status < 500,
-        }
-      );
+      const response = await axios.get("/api/authentication", {
+        headers: {
+          username,
+          password,
+        },
+        validateStatus: (status) => status < 500,
+      });
       console.log(response);
 
       if (response.status === 200 && response.data.authenticated === true) {
