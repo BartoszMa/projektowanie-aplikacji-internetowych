@@ -21,11 +21,8 @@
 ## Wymagania systemowe i funkcjonalne
 
 | Wymagania systemowe |  |  
-|--|--|  
-| **Backend** | Node.js, TypeScript |  
-| **Frontend** | Przeglądarka wspierająca ES6 |  
-| **Baza danych** | MongoDB |  
-| **Docker & Docker Compose** | do uruchomienia wszystkich serwisów |  
+|---------------------|--|   
+| **Docker v**        | do uruchomienia wszystkich serwisów |  
 
 ### Wymagania funkcjonalne:
 
