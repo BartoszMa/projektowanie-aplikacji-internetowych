@@ -33,7 +33,7 @@
 
 ### Architektura:
 
-- **Warstwa prezentacji:** React/JS + HTML/CSS
+- **Warstwa prezentacji:** React/JS + Chakra-UI + HTML/CSS
 - **Warstwa logiki biznesowej:** Express.js + TypeScript
 - **Warstwa danych:** MongoDB
 
@@ -584,7 +584,7 @@ export class QuestionsService {
 
 #### Frontend
 
-Frontend został napisany przy użyciu React oraz Chakra-UI, dzięki czemu widok jest renderowany po stronie klienta, a do tego ładnie wygląda. Do głównych widoków można zaliczyć:
+Frontend został napisany przy użyciu React oraz Chakra-UI, dzięki czemu widok jest renderowany po stronie klienta, a do tego ładnie wygląda. Z wykorzystaniem wbudowanego i własnego trasowania (routes), zabezpieczamy aplikację przed próbą wejścia na nieistniejące lub niedostępne dla niezalogowanego użytkownika strony. Do głównych widoków można zaliczyć:
 
 - główną aplikację
 
@@ -1128,6 +1128,6 @@ export default AdminClosedQuestions;
 
 ## Podsumowanie
 
-Aplikacja realizuje założony cel: generuje quizy językowe, pozwala na weryfikację wiedzy poprzez zwracane poprawne odpowiedzi oraz oferuje panel do zarządzania pytaniami. Nie napotkano większych trudności - głównie były to kwestie organizacyjne, na przykład decyzja o strukturze przesyłanych danych pomiędzy frontem, a backendem. W przyszłości planowane są: zapisywanie historii wyników, moduł analizy postępów (dashboard), generowanie raportów PDF oraz wsparcie mediów (audio/video) w pytaniach.
+Aplikacja realizuje założony cel: generuje quizy językowe, pozwala na weryfikację wiedzy poprzez zwracanie poprawnych odpowiedzi oraz oferuje panel do zarządzania pytaniami. Nie napotkano większych trudności - głównie były to kwestie organizacyjne, na przykład decyzja o strukturze przesyłanych danych pomiędzy frontem, a backendem. W przyszłości planowane są: zapisywanie historii wyników, moduł analizy postępów (dashboard), generowanie raportów PDF oraz wsparcie mediów (audio/video) w pytaniach.
     
 ---
