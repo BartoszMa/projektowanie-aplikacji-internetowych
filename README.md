@@ -21,8 +21,8 @@
 ## Wymagania systemowe i funkcjonalne
 
 | Wymagania systemowe |  |  
-|---------------------|--|   
-| **Docker v**        | do uruchomienia wszystkich serwisów |  
+|----------------|--|   
+| Docker v1.27+  | do uruchomienia wszystkich serwisów |  
 
 ### Wymagania funkcjonalne:
 
@@ -1122,7 +1122,7 @@ export default AdminClosedQuestions;
 **Uwagi dotyczące implementacji:**
 
 - Wszystkie dane testowe znajdują się w pliku `mockData.ts`, wykorzystywanym przy inicjalizacji bazy.
-- Nie ma mechanizmu trwałej historii – każda sesja operuje na danych mockowanych.
+- Ze względów konsystencji, nie zdecydowaliśmy się na zaimplementowanie mechanizmu trwałej historii – każda sesja operuje na danych mockowanych.
 
 ---   
 
