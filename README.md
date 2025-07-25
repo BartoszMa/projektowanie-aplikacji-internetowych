@@ -24,6 +24,12 @@
 |----------------|--|   
 | Docker v1.27+  | do uruchomienia wszystkich serwisów |  
 
+### Uruchomienie projektu
+
+```yaml
+docker-compose -f docker-compose.yaml up --build
+```
+
 ### Wymagania funkcjonalne:
 
 - Generowanie testu z określoną liczbą pytań (otwartych/zamkniętych) na podstawie puli pytań
